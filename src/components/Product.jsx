@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { useParams } from 'react-router'
-
+import { useDispatch } from 'react-redux';
+import { addcart } from '../redux/actions';
 import {Link} from 'react-router-dom'
 import Footer from './Footer';
 
@@ -8,6 +9,11 @@ export default function Product() {
   const {id} = useParams();
   const [product, setProduct] = useState([])
   const [loadind, setLoading] = useState(false)
+
+  const dispatch = useDispatch()
+  const addProduct = (product) => {
+    dispatch(addcart(product))
+  }
 
   useEffect(() => {
     const getProduct = async () => {
@@ -40,14 +46,14 @@ export default function Product() {
     <i className="fa fa-star ms-1 text-warning"></i></p>
     <h3 className="display-6 my-4 fw bold">$ {product.price}</h3>
     <p className="lead py-3">{product.description}</p>
-    <button className="btn btn-outline-dark me-3">Add to cart</button>
+    <button className="btn btn-outline-dark me-3" onClick={() => addProduct(product)}>Add to cart</button>
     <Link to = '/cart' className="btn btn-dark">Go to cart</Link>
   </div>
     </>
   }
 
   return (
-    <div>
+    <div className='product'>
       <div className="container">
         <div className="row py-5">
           {loadind ? <Loading /> : <ShowProduct />}
